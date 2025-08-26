@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiffyAI</title>
+    <!-- Importing a futuristic font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define the color scheme using CSS variables for easy updates */
+        :root {
+            --electric-blue: #007bff;
+            --electric-pink: #ff00ff;
+            --dark-space: #101010;
+            --text-color: #e0e0e0;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+        
+        /* Basic body styling to center the content and set the background */
+        body {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-color);
+            background-color: var(--dark-space);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        /* The main container for all elements */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        /* Fade-in animation for the entire content on page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* TiffyAI logo styling with glowing text effect */
+        .logo {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 0 0 0.5em 0;
+            color: var(--electric-blue);
+            text-shadow: 0 0 10px var(--electric-blue);
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        /* Subtitle for the page */
+        .slogan {
+            font-size: 1em;
+            color: var(--electric-pink);
+            text-shadow: 0 0 5px var(--electric-pink);
+            margin: 0 0 2em 0;
+        }
+
+        /* Keyframe animation for the glowing logo */
+        @keyframes glow {
+            from { text-shadow: 0 0 5px var(--electric-blue), 0 0 10px var(--electric-blue); }
+            to { text-shadow: 0 0 10px var(--electric-blue), 0 0 20px var(--electric-blue); }
+        }
+
+        /* Fingerprint scanner styling */
+        .fingerprint-scanner {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border: 3px solid var(--electric-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1.5em;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* The animated scan line that moves up and down */
+        .fingerprint-scan-line {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--electric-pink), transparent);
+            animation: scan 2s infinite linear;
+            top: -100%;
+        }
+
+        /* Keyframe animation for the scanning motion */
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Styling for the button to start the scan */
+        #scanButton {
+            background-color: var(--electric-blue);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px var(--electric-blue);
+            transition: all 0.3s ease;
+        }
+        
+        /* Hover and active effects for the button */
+        #scanButton:hover {
+            box-shadow: 0 0 20px var(--electric-blue), 0 0 40px var(--electric-blue);
+            transform: scale(1.05);
+        }
+        
+        #scanButton:active {
+            transform: scale(0.95);
+        }
+
+        /* Styling for the message display area */
+        #message {
+            margin-top: 20px;
+            font-size: 1em;
+            min-height: 2em;
+            transition: color 0.3s ease;
+        }
+        
+        /* Styling for the loading indicator */
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--electric-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Initially hidden */
+        }
+        
+        /* Keyframe animation for the spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">TiffyAI</h1>
+        <p class="slogan">WebAuth Portal</p>
+        
+        <div class="fingerprint-scanner">
+            <div class="fingerprint-scan-line"></div>
+        </div>
+
+        <button id="scanButton">Authenticate</button>
+        <div id="loadingSpinner" class="loading-spinner"></div>
+        <p id="message">Press the button to scan your fingerprint.</p>
+    </div>
+
+    <script>
+        // Get references to the HTML elements we will manipulate
+        const scanButton = document.getElementById('scanButton');
+        const messageDisplay = document.getElementById('message');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const scannerLine = document.querySelector('.fingerprint-scan-line');
+
+        // Check for WebAuthn API support first
+        if (!window.PublicKeyCredential) {
+            messageDisplay.textContent = 'This feature requires a modern browser with biometric support.';
+            messageDisplay.style.color = 'var(--error-color)';
+            scanButton.disabled = true;
+        }
+
+        /**
+         * The main asynchronous function to handle WebAuthn authentication.
+         */
+        async function authenticateUser() {
+            // Update UI to show that the process is starting
+            scanButton.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            scannerLine.style.animationPlayState = 'running';
+            messageDisplay.textContent = 'Scanning... Please check your device’s biometric sensor.';
+            messageDisplay.style.color = 'var(--text-color)';
+            
+            // Generate a random challenge. A real-world application would get this from a server.
+            const challenge = new Uint8Array(32);
+            window.crypto.getRandomValues(challenge);
+
+            // Define the options for the WebAuthn API call
+            const credentialRequestOptions = {
+                publicKey: {
+                    challenge: challenge,
+                    allowCredentials: [], // Empty to allow any credentials to be used
+                    timeout: 60000, // 60-second timeout
+                    userVerification: 'preferred' // Recommended for biometrics
+                }
+            };
+            
+            try {
+                // Call the WebAuthn API to get a credential (authentication)
+                const credential = await navigator.credentials.get(credentialRequestOptions);
+                
+                // If the promise resolves, it means the user successfully authenticated
+                
+                // Update the UI for success
+                messageDisplay.textContent = 'Authentication successful! Redirecting...';
+                messageDisplay.style.color = 'var(--success-color)';
+                
+                // Redirect to the destination page after a short delay
+                setTimeout(() => {
+                    window.location.href = "https://tiffyai.github.io/Play/";
+                }, 1500);
+
+            } catch (error) {
+                // If the promise rejects, the authentication failed or was cancelled.
+                console.error("Authentication failed:", error);
+                
+                // Update the UI for failure
+                messageDisplay.textContent = 'Authentication failed. Please try again.';
+                messageDisplay.style.color = 'var(--error-color)';
+
+            } finally {
+                // Reset UI elements regardless of success or failure
+                loadingSpinner.style.display = 'none';
+                scanButton.style.display = 'block';
+                scannerLine.style.animationPlayState = 'paused';
+                scannerLine.style.top = '-100%'; // Reset scan line position
+            }
+        }
+        
+        // Add an event listener to the button to trigger the authentication process
+        scanButton.addEventListener('click', authenticateUser);
+    </script>
+</body>
+</html>
