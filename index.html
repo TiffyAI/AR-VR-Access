@@ -120,7 +120,7 @@
                 }, 3000);
             }
 
-            // Function to handle the success state and redirect
+            // Function to handle the success state and trigger the redirect
             function showSuccess() {
                 statusMessage.textContent = "Access Granted!";
                 statusMessage.classList.remove('text-red-500');
@@ -134,6 +134,7 @@
 
                 // Delay the redirect to allow the user to see the success state
                 setTimeout(() => {
+                    // Redirect to the TiffyAI Play page
                     window.location.href = "https://tiffyai.github.io/Play";
                 }, 1500); // Redirect after 1.5 seconds
             }
