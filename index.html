@@ -3,71 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TiffyAI Secure Lock</title>
+    <title>Tiffy AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4D41FF',
+                        'secondary-pink': '#FF41C0',
+                        'dark-gray': '#111827',
+                        'light-gray': '#1F2937',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Custom styles for the passkey system with a futuristic look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+
         body {
-            font-family: 'Orbitron', sans-serif;
-        }
-        
-        /* Basic animation for the lock icon */
-        @keyframes spin-lock {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
-        }
-        .lock-icon-spin {
-            animation: spin-lock 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #2c2560, #111827);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
         }
 
-        /* Animation for a successful unlock */
-        @keyframes unlock-glow {
-            from { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
-            to { box-shadow: 0 0 50px rgba(0, 255, 0, 0.8); }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .success-glow {
-            animation: unlock-glow 1s ease-in-out forwards;
+
+        .auth-container {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(31, 41, 55, 0.5); /* Semi-transparent light-gray */
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, #4D41FF, #FF41C0) 1;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #message-box {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen p-4">
+<body class="text-white flex items-center justify-center min-h-screen p-4">
 
-    <!-- Main container for the lock interface -->
-    <div class="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-2xl shadow-2xl space-y-8 w-full max-w-sm border-2 border-purple-700 bg-opacity-70 transition-all duration-500">
-        
-        <!-- Header and title -->
-        <div class="text-center space-y-2">
-            <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">TiffyAI Secure Access</h1>
-            <p class="text-gray-400" id="header-text">Authenticating...</p>
+    <div class="auth-container p-8 md:p-12 rounded-3xl shadow-2xl w-full max-w-sm text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-blue to-secondary-pink opacity-5 blur-3xl z-0"></div>
+
+        <div class="relative z-10">
+            <div class="mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 mx-auto text-primary-blue mb-2">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm4.875 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM9 17.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75-.75.336-.75.75.336.75.75.75Zm6-1.5c-.414 0-.75.336-.75.75s.336.75.75.75.75-.336.75-.75-.336-.75-.75-.75Zm-.75-7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM9 9.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM7.5 15a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM16.5 15a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z" clip-rule="evenodd" />
+                </svg>
+                <h1 class="text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-secondary-pink">
+                    Tiffy AI
+                </h1>
+                <p class="mt-2 text-sm text-gray-300 font-light">Secure Access with Passkey</p>
+            </div>
+
+            <div id="message-box" class="bg-gray-800 p-4 rounded-xl text-center mb-6 border border-gray-700">
+                <p id="message-text" class="text-white text-sm font-medium"></p>
+            </div>
+
+            <div id="auth-ui">
+                </div>
+
+            <p class="mt-8 text-xs text-gray-500">
+                This app uses your device's passkey for secure, passwordless authentication.
+                <br>
+                A unique credential will be stored locally on this device.
+            </p>
         </div>
-
-        <!-- Lock icon, styled as a visual element -->
-        <div class="relative p-6 rounded-full bg-gray-700 transition-colors duration-300 shadow-lg border border-purple-500">
-            <!-- SVG for a modern lock icon -->
-            <svg class="w-16 h-16 text-purple-400 lock-icon-spin" id="lock-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 1L4 5v6c0 5.55 3.84 10.74 9 12a15.02 15.02 0 005-2.26V9h-2V7h2V5.5c0-1.93-1.57-3.5-3.5-3.5S12 2.57 12 4.5V6H8v2h4v2h2v-2h2v-2h-2V4.5c0-1.93-1.57-3.5-3.5-3.5z"/>
-            </svg>
-        </div>
-
-        <!-- Dynamic UI for Passkey Management -->
-        <div id="auth-ui" class="w-full space-y-4">
-            <!-- This content will be dynamically updated by JavaScript -->
-        </div>
-
-        <!-- Message Box -->
-        <div id="message-box" class="bg-gray-700 p-4 rounded-xl text-center transition-all duration-300 ease-in-out transform w-full">
-            <p id="message-text" class="text-white text-sm"></p>
-        </div>
-
-        <!-- Acknowledgment for the user about the functionality -->
-        <p class="mt-8 text-xs text-gray-400">
-            This app uses your device's passkey for secure, passwordless authentication.
-            <br>
-            A unique credential will be stored locally on this device.
-        </p>
     </div>
 
     <script>
@@ -135,7 +168,7 @@
                 showMessage('No passkey found. Please set one up.', 'text-white');
                 const setupButton = document.createElement('button');
                 setupButton.textContent = 'Set Up Passkey';
-                setupButton.className = 'w-full px-4 py-3 bg-purple-600 text-white rounded-xl shadow-lg hover:bg-opacity-90 transition-all duration-300 font-semibold';
+                setupButton.className = 'w-full px-4 py-3 bg-primary-blue text-white rounded-xl shadow-lg hover:bg-primary-blue/90 transition-colors duration-300 font-semibold';
                 setupButton.onclick = setupPasskey;
                 authUI.appendChild(setupButton);
             } else {
@@ -143,7 +176,7 @@
                 showMessage('Authenticate with your passkey.', 'text-white');
                 const authButton = document.createElement('button');
                 authButton.textContent = 'Unlock with Fingerprint';
-                authButton.className = 'w-full px-4 py-3 bg-pink-500 text-white rounded-xl shadow-lg hover:bg-opacity-90 transition-all duration-300 font-semibold';
+                authButton.className = 'w-full px-4 py-3 bg-secondary-pink text-white rounded-xl shadow-lg hover:bg-secondary-pink/90 transition-colors duration-300 font-semibold';
                 authButton.onclick = authenticate;
                 authUI.appendChild(authButton);
 
@@ -269,7 +302,6 @@
                 setTimeout(() => {
                     showMessage('Success! Redirecting to main page...', 'text-green-400');
                     // In a real app, this would be a redirect: window.location.href = 'https://www.tiffy.ai/play';
-                    window.location.href = 'https://tiffyai.github.io/Play'; // Redirect to /Play
                 }, 1000);
 
                 // Start the auto-lock timer
