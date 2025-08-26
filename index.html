@@ -1,290 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tiffy AI Unlock</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* === Space Gradient Background === */
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top left, #1a1a2e, #0f0f1c 70%);
-      overflow: hidden;
-    }
-    body::before {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        from 180deg,
-        #4D41FF22,
-        #FF41C022,
-        #4D41FF22
-      );
-      animation: spin 20s linear infinite;
-      z-index: 0;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffy AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4D41FF',
+                        'secondary-pink': '#FF41C0',
+                        'dark-gray': '#111827',
+                        'light-gray': '#1F2937',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
 
-    /* === Stars twinkle === */
-    .stars {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: transparent url("https://i.ibb.co/7QpKsCX/stars.png") repeat;
-      animation: twinkle 100s linear infinite;
-      z-index: 0;
-    }
-    @keyframes twinkle {
-      from { background-position: 0 0; }
-      to { background-position: -10000px 5000px; }
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #2c2560, #111827);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+        }
 
-    /* === Glassmorphism Container === */
-    .auth-container {
-      position: relative;
-      z-index: 1;
-      padding: 2rem;
-      border-radius: 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 40px rgba(77, 65, 255, 0.5);
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      color: white;
-    }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    /* === Logo === */
-    .logo {
-      font-size: 2.5rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #4D41FF, #FF41C0, #4D41FF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shimmer 6s infinite linear;
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
+        .auth-container {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(31, 41, 55, 0.5); /* Semi-transparent light-gray */
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, #4D41FF, #FF41C0) 1;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
 
-    /* === Buttons === */
-    .btn {
-      width: 100%;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      border: none;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-blue {
-      background: linear-gradient(90deg, #4D41FF, #6D61FF);
-      box-shadow: 0 0 15px rgba(77, 65, 255, 0.6);
-    }
-    .btn-blue:hover {
-      background: linear-gradient(90deg, #6D61FF, #8D81FF);
-      box-shadow: 0 0 30px rgba(77, 65, 255, 0.9);
-      transform: translateY(-2px);
-    }
-    .btn-pink {
-      background: linear-gradient(90deg, #FF41C0, #FF61D5);
-      box-shadow: 0 0 15px rgba(255, 65, 192, 0.6);
-    }
-    .btn-pink:hover {
-      background: linear-gradient(90deg, #FF61D5, #FF81E5);
-      box-shadow: 0 0 30px rgba(255, 65, 192, 0.9);
-      transform: translateY(-2px);
-    }
+        @keyframes fadeInScale {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-    /* === Message Box === */
-    #message-box {
-      padding: 0.8rem;
-      border-radius: 0.75rem;
-      background: rgba(255, 255, 255, 0.1);
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
+        #message-box {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="stars"></div>
+<body class="text-white flex items-center justify-center min-h-screen p-4">
 
-  <!-- Unlock Container -->
-  <div class="auth-container">
-    <h1 class="logo">Tiffy AI</h1>
-    <p class="text-sm text-pink-300 mb-4">Space-Age Secure Unlock</p>
+    <div class="auth-container p-8 md:p-12 rounded-3xl shadow-2xl w-full max-w-sm text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-blue to-secondary-pink opacity-5 blur-3xl z-0"></div>
 
-    <!-- Messages -->
-    <div id="message-box">
-      <p id="message-text">Please authenticate to continue</p>
+        <div class="relative z-10">
+            <div class="mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 mx-auto text-primary-blue mb-2">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm4.875 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM9 17.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75-.75.336-.75.75.336.75.75.75Zm6-1.5c-.414 0-.75.336-.75.75s.336.75.75.75.75-.336.75-.75-.336-.75-.75-.75Zm-.75-7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM9 9.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM7.5 15a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM16.5 15a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z" clip-rule="evenodd" />
+                </svg>
+                <h1 class="text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-secondary-pink">
+                    Tiffy AI
+                </h1>
+                <p class="mt-2 text-sm text-gray-300 font-light">Secure Access with Passkey</p>
+            </div>
+
+            <div id="message-box" class="bg-gray-800 p-4 rounded-xl text-center mb-6 border border-gray-700">
+                <p id="message-text" class="text-white text-sm font-medium"></p>
+            </div>
+
+            <div id="auth-ui">
+                </div>
+
+            <p class="mt-8 text-xs text-gray-500">
+                This app uses your device's passkey for secure, passwordless authentication.
+                <br>
+                A unique credential will be stored locally on this device.
+            </p>
+        </div>
     </div>
 
-    <!-- Dynamic Buttons -->
-    <div id="auth-ui"></div>
-  </div>
+    <script>
+        // Use a random user ID for demonstration purposes. In a real application, this would come from a server.
+        const USER_ID = 'user_demo_123';
+        const RP_ID = window.location.hostname; // Relying Party ID is the domain
+        const RP_NAME = 'Tiffy AI';
+        const TIMEOUT_SECONDS = 30; // Auto-lock timeout
+        
+        let timeoutId = null;
 
-  <script>
-    const USER_ID = 'user_demo_123';
-    const RP_ID = window.location.hostname;
-    const RP_NAME = 'Tiffy AI';
-    const TIMEOUT_SECONDS = 30;
-    let timeoutId = null;
+        /**
+         * Converts a Base64URL string to an ArrayBuffer.
+         * @param {string} base64url The Base64URL string.
+         * @returns {ArrayBuffer} The decoded ArrayBuffer.
+         */
+        const base64urlToArrayBuffer = (base64url) => {
+            const padding = '='.repeat((4 - base64url.length % 4) % 4);
+            const base64 = (base64url + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray.buffer;
+        };
 
-    const base64urlToArrayBuffer = (base64url) => {
-      const padding = '='.repeat((4 - base64url.length % 4) % 4);
-      const base64 = (base64url + padding).replace(/-/g, '+').replace(/_/g, '/');
-      const rawData = window.atob(base64);
-      const outputArray = new Uint8Array(rawData.length);
-      for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-      }
-      return outputArray.buffer;
-    };
+        /**
+         * Converts an ArrayBuffer to a Base64URL string.
+         * @param {ArrayBuffer} arrayBuffer The ArrayBuffer to encode.
+         * @returns {string} The Base64URL string.
+         */
+        const arrayBufferToBase64url = (arrayBuffer) => {
+            const byteArray = new Uint8Array(arrayBuffer);
+            let byteString = '';
+            for (let i = 0; i < byteArray.byteLength; i++) {
+                byteString += String.fromCharCode(byteArray[i]);
+            }
+            return window.btoa(byteString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+        };
 
-    const arrayBufferToBase64url = (arrayBuffer) => {
-      const byteArray = new Uint8Array(arrayBuffer);
-      let byteString = '';
-      for (let i = 0; i < byteArray.byteLength; i++) {
-        byteString += String.fromCharCode(byteArray[i]);
-      }
-      return window.btoa(byteString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    };
+        /**
+         * Displays a message in the message box.
+         * @param {string} message The message to display.
+         * @param {string} color The Tailwind color class for the text.
+         */
+        const showMessage = (message, color = 'text-white') => {
+            const messageText = document.getElementById('message-text');
+            messageText.textContent = message;
+            messageText.className = color;
+        };
 
-    const showMessage = (message, color = 'text-white') => {
-      const messageText = document.getElementById('message-text');
-      messageText.textContent = message;
-      messageText.className = color;
-    };
+        /**
+         * Dynamically renders the UI based on whether a passkey exists.
+         */
+        const renderUI = () => {
+            const authUI = document.getElementById('auth-ui');
+            const passkeyExists = localStorage.getItem('passkeyId');
 
-    const renderUI = () => {
-      const authUI = document.getElementById('auth-ui');
-      const passkeyExists = localStorage.getItem('passkeyId');
-      authUI.innerHTML = '';
+            // Clear any existing UI
+            authUI.innerHTML = '';
 
-      if (!passkeyExists) {
-        showMessage('No passkey found. Please set one up.', 'text-gray-200');
-        const setupButton = document.createElement('button');
-        setupButton.textContent = '🚀 Set Up Passkey';
-        setupButton.className = 'btn btn-blue';
-        setupButton.onclick = setupPasskey;
-        authUI.appendChild(setupButton);
-      } else {
-        showMessage('Authenticate with your passkey.', 'text-gray-200');
-        const authButton = document.createElement('button');
-        authButton.textContent = '🔓 Unlock with Fingerprint';
-        authButton.className = 'btn btn-pink';
-        authButton.onclick = authenticate;
-        authUI.appendChild(authButton);
+            if (!passkeyExists) {
+                // Render setup button if no passkey is found
+                showMessage('No passkey found. Please set one up.', 'text-white');
+                const setupButton = document.createElement('button');
+                setupButton.textContent = 'Set Up Passkey';
+                setupButton.className = 'w-full px-4 py-3 bg-primary-blue text-white rounded-xl shadow-lg hover:bg-primary-blue/90 transition-colors duration-300 font-semibold';
+                setupButton.onclick = setupPasskey;
+                authUI.appendChild(setupButton);
+            } else {
+                // Render authenticate button if a passkey exists
+                showMessage('Authenticate with your passkey.', 'text-white');
+                const authButton = document.createElement('button');
+                authButton.textContent = 'Unlock with Fingerprint';
+                authButton.className = 'w-full px-4 py-3 bg-secondary-pink text-white rounded-xl shadow-lg hover:bg-secondary-pink/90 transition-colors duration-300 font-semibold';
+                authButton.onclick = authenticate;
+                authUI.appendChild(authButton);
 
-        const resetButton = document.createElement('button');
-        resetButton.textContent = 'Reset Passkey';
-        resetButton.className = 'btn text-xs mt-2 text-gray-300 hover:text-white';
-        resetButton.onclick = resetPasskey;
-        authUI.appendChild(resetButton);
-      }
-    };
+                const container = document.querySelector('.auth-container');
+                container.style.transform = 'translateY(0)';
+                container.style.opacity = '1';
 
-    const setupPasskey = async () => {
-      try {
-        showMessage('Preparing passkey setup...');
-        const challenge = new Uint8Array(32);
-        crypto.getRandomValues(challenge);
+                // Add a "logout" or "reset" button for demo purposes
+                const resetButton = document.createElement('button');
+                resetButton.textContent = 'Reset Passkey';
+                resetButton.className = 'mt-4 text-xs text-gray-400 hover:text-white transition-colors';
+                resetButton.onclick = resetPasskey;
+                authUI.appendChild(resetButton);
+            }
+        };
 
-        const credential = await navigator.credentials.create({
-          publicKey: {
-            challenge,
-            rp: { id: RP_ID, name: RP_NAME },
-            user: {
-              id: new TextEncoder().encode(USER_ID),
-              name: USER_ID,
-              displayName: USER_ID,
-            },
-            pubKeyCredParams: [
-              { type: 'public-key', alg: -7 },
-              { type: 'public-key', alg: -257 },
-            ],
-            authenticatorSelection: {
-              authenticatorAttachment: 'platform',
-              userVerification: 'required',
-              residentKey: 'required',
-            },
-            timeout: 60000,
-          }
+        /**
+         * Initiates the passkey registration process.
+         */
+        const setupPasskey = async () => {
+            if (!window.PublicKeyCredential) {
+                showMessage('WebAuthn is not supported on this browser.', 'text-red-400');
+                return;
+            }
+
+            try {
+                showMessage('Preparing to set up passkey...', 'text-white');
+
+                // Generate a unique challenge for the registration
+                const challenge = new Uint8Array(32);
+                window.crypto.getRandomValues(challenge);
+
+                const credentialCreationOptions = {
+                    publicKey: {
+                        challenge: challenge,
+                        rp: {
+                            id: RP_ID,
+                            name: RP_NAME,
+                        },
+                        user: {
+                            id: new TextEncoder().encode(USER_ID),
+                            name: USER_ID,
+                            displayName: USER_ID,
+                        },
+                        pubKeyCredParams: [
+                            { type: 'public-key', alg: -7 }, // ES256
+                            { type: 'public-key', alg: -257 }, // RS256
+                        ],
+                        authenticatorSelection: {
+                            authenticatorAttachment: 'platform',
+                            userVerification: 'required',
+                            residentKey: 'required',
+                        },
+                        timeout: 60000,
+                    }
+                };
+
+                const credential = await navigator.credentials.create(credentialCreationOptions);
+
+                // Successfully created credential. Store the ID locally.
+                const credentialId = arrayBufferToBase64url(credential.rawId);
+                localStorage.setItem('passkeyId', credentialId);
+
+                showMessage('Passkey created successfully! Now try to unlock.', 'text-green-400');
+                
+                // Vanish the setup UI after a short delay
+                setTimeout(() => {
+                    document.querySelector('.auth-container').style.opacity = '0';
+                    setTimeout(() => renderUI(), 500);
+                }, 1000);
+
+            } catch (error) {
+                showMessage(`Passkey setup failed: ${error.message}`, 'text-red-400');
+            }
+        };
+
+        /**
+         * Initiates the passkey authentication process.
+         */
+        const authenticate = async () => {
+            if (!window.PublicKeyCredential) {
+                showMessage('WebAuthn is not supported on this browser.', 'text-red-400');
+                return;
+            }
+
+            try {
+                showMessage('Authenticating with passkey...', 'text-white');
+                
+                // Clear the timeout to prevent auto-lock during authentication
+                clearTimeout(timeoutId);
+
+                const passkeyId = localStorage.getItem('passkeyId');
+
+                if (!passkeyId) {
+                    showMessage('No passkey found. Please set one up.', 'text-red-400');
+                    renderUI();
+                    return;
+                }
+
+                // Generate a new challenge for authentication
+                const challenge = new Uint8Array(32);
+                window.crypto.getRandomValues(challenge);
+
+                const credentialRequestOptions = {
+                    publicKey: {
+                        challenge: challenge,
+                        rpId: RP_ID,
+                        allowCredentials: [{
+                            type: 'public-key',
+                            id: base64urlToArrayBuffer(passkeyId),
+                        }],
+                        userVerification: 'required',
+                        timeout: 60000,
+                    }
+                };
+
+                const credential = await navigator.credentials.get(credentialRequestOptions);
+
+                // Authentication successful
+                showMessage('Authentication successful!', 'text-green-400');
+                
+                // Redirect or perform other actions upon success
+                setTimeout(() => {
+                    showMessage('Success! Redirecting to main page...', 'text-green-400');
+                    // In a real app, this would be a redirect: window.location.href = 'https://www.tiffy.ai/play';
+                }, 1000);
+
+                // Start the auto-lock timer
+                startAutoLockTimer();
+
+            } catch (error) {
+                showMessage(`Authentication failed: ${error.message}`, 'text-red-400');
+                // Re-enable the authentication button if the user fails
+                startAutoLockTimer();
+            }
+        };
+
+        /**
+         * Starts the auto-lock timer.
+         */
+        const startAutoLockTimer = () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                showMessage('Session expired. Please authenticate again.', 'text-white');
+                document.querySelector('.auth-container').style.transform = 'translateY(0)';
+                document.querySelector('.auth-container').style.opacity = '1';
+                renderUI(); // Re-render the UI to show the locked state
+            }, TIMEOUT_SECONDS * 1000);
+        };
+
+        /**
+         * Resets the passkey stored in local storage for demo purposes.
+         */
+        const resetPasskey = () => {
+            localStorage.removeItem('passkeyId');
+            showMessage('Passkey reset. Please refresh the page to set up again.', 'text-yellow-400');
+            clearTimeout(timeoutId);
+            renderUI();
+        };
+
+        // Initial check on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderUI();
         });
+    </script>
 
-        const credentialId = arrayBufferToBase64url(credential.rawId);
-        localStorage.setItem('passkeyId', credentialId);
-        showMessage('Passkey created! Now unlock.', 'text-green-400');
-        setTimeout(renderUI, 1000);
-      } catch (error) {
-        showMessage(`Setup failed: ${error.message}`, 'text-red-400');
-      }
-    };
-
-    const authenticate = async () => {
-      try {
-        showMessage('Authenticating...');
-        clearTimeout(timeoutId);
-        const passkeyId = localStorage.getItem('passkeyId');
-        if (!passkeyId) return renderUI();
-
-        const challenge = new Uint8Array(32);
-        crypto.getRandomValues(challenge);
-
-        await navigator.credentials.get({
-          publicKey: {
-            challenge,
-            rpId: RP_ID,
-            allowCredentials: [{ type: 'public-key', id: base64urlToArrayBuffer(passkeyId) }],
-            userVerification: 'required',
-            timeout: 60000,
-          }
-        });
-
-        showMessage('✅ Authentication successful!', 'text-green-400');
-        setTimeout(() => {
-          showMessage('Redirecting...', 'text-green-400');
-        }, 1000);
-
-        startAutoLockTimer();
-      } catch (error) {
-        showMessage(`Auth failed: ${error.message}`, 'text-red-400');
-        startAutoLockTimer();
-      }
-    };
-
-    const startAutoLockTimer = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        showMessage('Session expired. Please authenticate again.');
-        renderUI();
-      }, TIMEOUT_SECONDS * 1000);
-    };
-
-    const resetPasskey = () => {
-      localStorage.removeItem('passkeyId');
-      showMessage('Passkey reset. Please refresh.', 'text-yellow-400');
-      clearTimeout(timeoutId);
-      renderUI();
-    };
-
-    document.addEventListener('DOMContentLoaded', renderUI);
-  </script>
 </body>
 </html>
